@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { OperandContext } from './context/OperandContext';
+import { describe, expect, it } from 'vitest';
 import Calculator from './Calculator';
+import { OperandContext } from './context/OperandContext';
+import FormWrapper from './FormWrapper';
 
 describe('Calculator', () => {
   it('calculates cubed value correctly', () => {
@@ -27,5 +28,18 @@ describe('Calculator', () => {
     const multiplyByThreeResult =
       screen.getByText('Multiply by 3').nextSibling.textContent;
     expect(multiplyByThreeResult).toBe('9'); // 3 * 3 = 9
+  });
+
+    it('disables the Submit button when the input is empty', () => {
+    const operand = '';
+    render(
+      <OperandContext.Provider value={{ operand }}>
+        <FormWrapper />
+      </OperandContext.Provider>
+    );
+
+    const button = screen.getByRole("button", { name: /submit/i });
+    expect(button).toBeDisabled();
+
   });
 });
